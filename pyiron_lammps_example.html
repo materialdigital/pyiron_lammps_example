@@ -349,8 +349,6 @@ mamba install -c conda-forge lammps</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "959f5d04ed984921b73c86bcf63dea09", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -363,7 +361,13 @@ mamba install -c conda-forge lammps</p>
 128 atom BCC Fe cell</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Fe&quot;</span><span class="p">,</span><span class="n">crystalstructure</span><span class="o">=</span><span class="s2">&quot;bcc&quot;</span><span class="p">,</span> <span class="n">cubic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Fe&quot;</span><span class="p">,</span><span class="n">crystalstructure</span><span class="o">=</span><span class="s2">&quot;bcc&quot;</span><span class="p">,</span> <span class="n">cubic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">structure</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>128
 </pre></div>
 </div>
 </div>
@@ -452,9 +456,13 @@ mamba install -c conda-forge lammps</p>
  &#39;2021--Starikov-S--Fe--LAMMPS--ipr1&#39;,
  &#39;2021--Starikov-S--Fe--LAMMPS--ipr2&#39;,
  &#39;2021--Wen-M--Fe-H--LAMMPS--ipr1&#39;,
+ &#39;2022--Allera-A--Fe-C--LAMMPS--ipr1&#39;,
  &#39;2022--Mahata-A--Al-Fe--LAMMPS--ipr1&#39;,
  &#39;2022--Starikov-S--Fe-Cr-H--LAMMPS--ipr1&#39;,
  &#39;2022--Sun-Y--Fe--LAMMPS--ipr1&#39;,
+ &#39;2023--Jana-R--Fe--LAMMPS--ipr1&#39;,
+ &#39;2023--Kumar-P--Fe-H--LAMMPS--ipr1&#39;,
+ &#39;2023--Tramontina-D-R--Fe-Cu-Ni--LAMMPS--ipr1&#39;,
  &#39;EAM_Dynamo_AcklandBaconCalder_1997_Fe__MO_142799717516_005&#39;,
  &#39;EAM_Dynamo_AcklandMendelevSrolovitz_2004_FeP__MO_884343146310_005&#39;,
  &#39;EAM_Dynamo_BonnyCastinBullens_2013_FeW__MO_737567242631_000&#39;,
@@ -540,22 +548,19 @@ Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">calc_md</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
             <span class="n">pressure</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">n_ionic_steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-            <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">time_step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># If we want to set cores</span>
+<span class="c1"># job.server.cores = 16</span>
+<span class="c1"># Queue name</span>
+<span class="c1"># job.server.queue = &quot;yourqueuename&quot;</span>
+<span class="c1"># job.run(run_mode=&quot;queue&quot;)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">delete_existing_job</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">job</span><span class="o">.</span><span class="n">calc_md</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>             <span class="n">pressure</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>             <span class="n">n_ionic_steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>             <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-
-<span class="ne">TypeError</span>: LammpsInteractive.calc_md() got an unexpected keyword argument &#39;timestep&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The job Al_T800K was saved and received the ID: 10
 </pre></div>
 </div>
 </div>
@@ -580,32 +585,32 @@ Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-526.17114488, -526.57621383, -525.69531783, -525.55762356,
-       -525.66110013, -525.8173434 , -526.20809109, -527.89629215,
-       -529.21539394, -528.10865025, -526.17408517, -525.87745527,
-       -525.49746874, -525.69202846, -526.90133547, -528.12387997,
-       -527.59735876, -525.03204861, -524.37627623, -525.79859142,
-       -526.48603873, -527.30027375, -526.61276712, -524.46082859,
-       -523.96489631, -525.33281983, -527.2149574 , -527.08325463,
-       -526.37621082, -525.25877697, -523.00758781, -521.40493486,
-       -523.73179651, -525.03799276, -526.46000886, -527.18188496,
-       -526.84633607, -524.48014893, -523.5428624 , -525.05035221,
-       -526.07182477, -526.30456978, -526.34046043, -524.89611761,
-       -522.61808904, -523.56054178, -525.15619667, -525.81350063,
-       -526.12772674, -526.51569419, -526.84588588, -526.25152273,
-       -525.35128331, -523.95485411, -524.28554967, -526.42151183,
-       -526.53244221, -526.5111831 , -525.01857209, -524.05358335,
-       -525.95521456, -528.0301092 , -527.5685311 , -525.7337877 ,
-       -524.77994457, -525.43920887, -526.67572706, -529.30186946,
-       -528.97230055, -527.44773209, -526.12834335, -525.21821686,
-       -525.24742094, -527.03681826, -528.82185687, -528.15691831,
-       -526.79696821, -526.14394215, -525.26035615, -524.72250635,
-       -524.646876  , -526.22111668, -527.44418741, -527.52380709,
-       -525.25534891, -524.14750291, -524.81229267, -526.19946928,
-       -526.63932219, -526.43123243, -526.11035709, -526.0398653 ,
-       -525.49938933, -525.85571244, -526.11676558, -526.9265416 ,
-       -527.05782934, -525.94429518, -524.61093528, -523.90375412,
-       -525.93417945])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-519.60472951, -520.31022857, -518.85599419, -518.23333594,
+       -519.10912889, -519.34228265, -518.46516833, -517.58394546,
+       -516.92867353, -518.26686374, -520.59855531, -520.64516505,
+       -519.55089525, -516.29642816, -515.26183071, -517.06102653,
+       -519.00397135, -519.80228505, -520.01710726, -519.22040093,
+       -516.88015128, -516.88147294, -519.02490068, -521.07167436,
+       -520.95514108, -519.77062747, -518.92788351, -518.45954449,
+       -518.63034176, -519.42133748, -520.54598092, -520.49450118,
+       -518.79191519, -516.68587844, -516.79219895, -520.29299259,
+       -521.01573455, -519.88744209, -518.26755574, -517.54611914,
+       -517.79469864, -520.54262417, -521.47146933, -520.31834969,
+       -517.80298903, -517.10164703, -518.08732855, -519.21126555,
+       -519.83462038, -520.23654594, -520.67550633, -519.41073618,
+       -518.02582228, -517.00867794, -517.61445983, -520.83044595,
+       -521.13216827, -519.40757432, -517.87988642, -517.79837044,
+       -518.23077419, -519.32319067, -519.40308835, -519.28193944,
+       -517.77083356, -516.14061747, -517.13104351, -519.76749537,
+       -520.38002999, -519.94877523, -518.37717523, -514.91949909,
+       -516.29660686, -518.31187217, -519.73435672, -520.44750109,
+       -519.81379946, -516.59774329, -516.15166249, -518.32120511,
+       -520.14994863, -520.3018185 , -519.22031616, -518.10261895,
+       -517.43811528, -516.83303238, -518.5722315 , -520.4811537 ,
+       -520.80972059, -519.15314479, -515.88518018, -516.41940137,
+       -518.59310253, -519.57208645, -519.65401927, -519.50688161,
+       -517.52540074, -516.02376142, -517.99430031, -519.51681225,
+       -519.41286181])
 </pre></div>
 </div>
 </div>
@@ -619,23 +624,32 @@ Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1.435      1.49356223 1.50533036 1.46473251 1.53939318 1.33564455
- 1.40801907 1.44178179 1.46191807 1.4121123  1.55743805 1.34048975
- 1.40088691 1.52494007 1.24238535 1.47457541 1.39999343 1.5037083
- 1.40876076 1.4616233  1.38676245 1.64419493 1.48055191 1.4785456
- 1.39603338 1.35858652 1.42890166 1.46654335 1.29592305 1.68563204
- 1.39495785 1.42749432 1.3081688  1.49963476 1.43506238 1.49852144
- 1.24324457 1.67757219 1.44076672 1.20739568 1.54944799 1.36676148
- 1.47711709 1.56452045 1.37447567 1.39064565 1.57643321 1.43676741
- 1.40015173 1.50981144 1.38867736 1.57109236 1.2856254  1.54594703
- 1.31317637 1.61450317 1.33993643 1.47975716 1.29701602 1.60625725
- 1.51985598 1.28531597 1.46949362 1.62701772 1.39252676 1.41475702
- 1.41793559 1.49555017 1.36919977 1.29440109 1.45452688 1.4524996
- 1.46974906 1.40388159 1.48605925 1.45328717 1.51845165 1.3794458
- 1.31442195 1.602098   1.32275338 1.27952894 1.44805984 1.39320421
- 1.61547194 1.53745005 1.47044878 1.57396901 1.40890561 1.33268622
- 1.41634987 1.43277885 1.28469122 1.48719237 1.46438068 1.52654848
- 1.52363702 1.3880327  1.44864484 1.47929786 1.44742157]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.00000000e+00 2.08344856e-02 1.15650871e+01 1.13767688e+01
+ 2.61619465e-02 1.15396078e+01 1.15247247e+01 1.15799042e+01
+ 1.79119567e-01 1.13519455e+01 2.70906702e-03 1.14992180e+01
+ 1.15620257e+01 1.09182956e-01 1.14877549e+01 1.77463723e-01
+ 5.77065564e-02 9.80090458e-03 1.14367157e+01 7.73095212e-02
+ 1.13880330e+01 1.15959894e+01 1.68157535e-01 1.13210849e+01
+ 1.52218960e-01 3.39066747e-02 1.15105318e+01 1.15644487e+01
+ 1.13798072e-01 6.85278432e-02 1.14691169e+01 9.05702743e-02
+ 1.13309891e+01 2.17620630e-01 1.15353073e+01 1.13980833e-01
+ 1.13346674e+01 9.30069276e-02 1.14939008e+01 1.14947568e+01
+ 1.35027450e-01 1.14317903e+01 2.60139529e-01 1.13931941e+01
+ 1.15881395e+01 5.52243632e-02 2.49307612e-02 1.86240860e-01
+ 1.14298377e+01 1.39056592e-01 1.13854204e+01 2.28635776e-01
+ 1.14077317e+01 1.15858164e+01 1.14949435e+01 3.53537966e-02
+ 1.15881559e+01 2.89357013e-02 1.16151715e+01 1.45579814e-02
+ 1.15225042e+01 1.15480632e+01 1.30711664e-01 1.13041166e+01
+ 1.16040347e+01 1.64156111e-01 1.14337886e+01 1.73342247e-01
+ 3.85478862e-03 1.14435007e+01 1.14657045e+01 9.09606078e-02
+ 1.15629824e+01 1.14942454e+01 1.77042058e-02 1.13821673e+01
+ 3.30906734e-01 1.12999009e+01 8.12568873e-02 1.15658041e+01
+ 1.13269287e+01 9.29101395e-02 1.15239099e+01 1.20694577e-01
+ 1.15247694e+01 1.37676853e-01 1.14738614e+01 2.54251003e-01
+ 1.13922766e+01 1.15100570e+01 7.53841131e-02 1.13931955e+01
+ 4.89100204e-02 4.20772219e-02 1.56937884e-01 1.15591914e+01
+ 1.23712433e-01 1.13155026e+01 1.15523820e+01 1.63607229e-01
+ 1.14747487e+01]
 </pre></div>
 </div>
 </div>
@@ -649,10 +663,10 @@ Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb9a90ea980&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe81e7b3ad0&gt;]
 </pre></div>
 </div>
-<img alt="_images/d9490fe4603f0c246ec3b3678166e649bf805b41e95f6fab8b9f90f7bcd5e7c7.png" src="_images/d9490fe4603f0c246ec3b3678166e649bf805b41e95f6fab8b9f90f7bcd5e7c7.png" />
+<img alt="_images/a49c0090ff58f7e1f7632b2422aef7a0f3279f0445074bd6cd255cf3e211ac4a.png" src="_images/a49c0090ff58f7e1f7632b2422aef7a0f3279f0445074bd6cd255cf3e211ac4a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -662,10 +676,10 @@ Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb9a9ca7e20&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fe81e050e50&gt;]
 </pre></div>
 </div>
-<img alt="_images/0c9c9a7023f4ef18244a44edbe0990ec46bf2db6509d06c7491d6f860963cb23.png" src="_images/0c9c9a7023f4ef18244a44edbe0990ec46bf2db6509d06c7491d6f860963cb23.png" />
+<img alt="_images/4a45db2d488ad1a551a208b305a6e9dffc2cab477a7b1f4b6680eae362d2a911.png" src="_images/4a45db2d488ad1a551a208b305a6e9dffc2cab477a7b1f4b6680eae362d2a911.png" />
 </div>
 </div>
 <p>If NGLView is installed, we can also plot an animated trajectory of the atoms:</p>
@@ -676,7 +690,7 @@ Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2cce407da8494c668d70edf54406c0b2", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "757d426c86bc4f9b92701f3b24138bd6", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 
