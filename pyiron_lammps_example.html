@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Running a LAMMPS job in pyiron &#8212; pyiron_lammps_example</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pyiron_lammps_example';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pyiron workflow template" href="README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo_dark.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo_dark.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="README.html">
+                    pyiron workflow template
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Running a LAMMPS job in pyiron</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/materialdigital/pyiron_lammps_example/master?urlpath=lab/tree/pyiron_lammps_example.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/pyiron_lammps_example.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Running a LAMMPS job in pyiron</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="running-a-lammps-job-in-pyiron">
+<h1>Running a LAMMPS job in pyiron<a class="headerlink" href="#running-a-lammps-job-in-pyiron" title="Permalink to this headline">#</a></h1>
+<p>This notebook <strong>doesn’t</strong> work out of the box if you haven’t configured LAMMPS for pyiron</p>
+<p>conda install -c conda-forge lammps
+OR
+mamba install -c conda-forge lammps</p>
+<p>In the python environment in which you are running pyiron</p>
+<p>WARNING: In practice/production you should configure a compiled LAMMPS executable that is optimised for your cluster!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyiron.project</span> <span class="kn">import</span> <span class="n">Project</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "959f5d04ed984921b73c86bcf63dea09", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pr</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="s2">&quot;run_lammps_calc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create the structure that we’re going to use:
+128 atom BCC Fe cell</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">structure</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create</span><span class="o">.</span><span class="n">structure</span><span class="o">.</span><span class="n">ase</span><span class="o">.</span><span class="n">bulk</span><span class="p">(</span><span class="s2">&quot;Fe&quot;</span><span class="p">,</span><span class="n">crystalstructure</span><span class="o">=</span><span class="s2">&quot;bcc&quot;</span><span class="p">,</span> <span class="n">cubic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create the pyiron job, assign the structure to the job.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">create_job</span><span class="p">(</span><span class="n">job_type</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">job_type</span><span class="o">.</span><span class="n">Lammps</span><span class="p">,</span> <span class="n">job_name</span><span class="o">=</span><span class="s1">&#39;Al_T800K&#39;</span><span class="p">)</span>
+
+<span class="n">job</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We need to see the potentials, pyiron has an inbuilt potential database</p>
+<p>It automatically finds the applicable potentials given the structure provided.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">list_potentials</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;1997--Ackland-G-J--Fe--LAMMPS--ipr1&#39;,
+ &#39;1998--Meyer-R--Fe--LAMMPS--ipr1&#39;,
+ &#39;2001--Lee-B-J--Fe--LAMMPS--ipr1&#39;,
+ &#39;2001--Lee-B-J--Fe-Cr--LAMMPS--ipr1&#39;,
+ &#39;2003--Mendelev-M-I--Fe-2--LAMMPS--ipr3&#39;,
+ &#39;2003--Mendelev-M-I--Fe-5--LAMMPS--ipr1&#39;,
+ &#39;2004--Ackland-G-J--Fe-P--LAMMPS--ipr1&#39;,
+ &#39;2004--Zhou-X-W--Fe--LAMMPS--ipr2&#39;,
+ &#39;2005--Lee-B-J--Fe-Cu--LAMMPS--ipr1&#39;,
+ &#39;2005--Mendelev-M-I--Al-Fe--LAMMPS--ipr1&#39;,
+ &#39;2006--Chamati-H--Fe--LAMMPS--ipr1&#39;,
+ &#39;2006--Kim-J--Fe-Pt--LAMMPS--ipr1&#39;,
+ &#39;2006--Lee-B-J--Fe-C--LAMMPS--ipr1&#39;,
+ &#39;2006--Lee-B-J--Fe-N--LAMMPS--ipr1&#39;,
+ &#39;2007--Lee-B-J--Fe-H--LAMMPS--ipr1&#39;,
+ &#39;2007--Mendelev-M-I--V-Fe--LAMMPS--ipr1&#39;,
+ &#39;2008--Hepburn-D-J--Fe-C--LAMMPS--ipr1&#39;,
+ &#39;2008--Sa-I--Fe-Nb--LAMMPS--ipr1&#39;,
+ &#39;2008--Sa-I--Fe-Ti--LAMMPS--ipr1&#39;,
+ &#39;2009--Bonny-G--Fe-Cu-Ni--LAMMPS--ipr1&#39;,
+ &#39;2009--Bonny-G--Fe-Ni--LAMMPS--ipr1&#39;,
+ &#39;2009--Kim-H-K--Fe-Ti-C--LAMMPS--ipr2&#39;,
+ &#39;2009--Kim-Y-M--Fe-Mn--LAMMPS--ipr1&#39;,
+ &#39;2009--Olsson-P-A-T--Fe--LAMMPS--ipr1&#39;,
+ &#39;2009--Stukowski-A--Fe-Cr--LAMMPS--ipr1&#39;,
+ &#39;2010--Kim-H-K--Fe-Nb-C--LAMMPS--ipr1&#39;,
+ &#39;2010--Lee-E--Fe-Al--LAMMPS--ipr1&#39;,
+ &#39;2010--Malerba-L--Fe--LAMMPS--ipr1&#39;,
+ &#39;2011--Bonny-G--Fe-Cr--LAMMPS--ipr2&#39;,
+ &#39;2011--Bonny-G--Fe-Cr--LAMMPS--ipr3&#39;,
+ &#39;2011--Bonny-G--Fe-Ni-Cr--LAMMPS--ipr1&#39;,
+ &#39;2011--Bonny-G--Fe-Ni-Cr--LAMMPS--ipr2&#39;,
+ &#39;2011--Chiesa-S--Fe-33--LAMMPS--ipr1&#39;,
+ &#39;2012--Jelinek-B--Al-Si-Mg-Cu-Fe--LAMMPS--ipr2&#39;,
+ &#39;2012--Ko-W-S--Fe-P--LAMMPS--ipr1&#39;,
+ &#39;2012--Proville-L--Fe--LAMMPS--ipr1&#39;,
+ &#39;2013--Bonny-G--Fe-Cr-W--LAMMPS--ipr2&#39;,
+ &#39;2013--Bonny-G--Fe-Cr-W--LAMMPS--ipr3&#39;,
+ &#39;2013--Bonny-G--Fe-Ni-Cr--LAMMPS--ipr1&#39;,
+ &#39;2013--Bonny-G--Fe-W--LAMMPS--ipr1&#39;,
+ &#39;2013--Henriksson-K-O-E--Fe-C--LAMMPS--ipr1&#39;,
+ &#39;2014--Liyanage-L-S-I--Fe-C--LAMMPS--ipr2&#39;,
+ &#39;2015--Asadi-E--Fe--LAMMPS--ipr1&#39;,
+ &#39;2015--Eich-S-M--Fe-Cr--LAMMPS--ipr1&#39;,
+ &#39;2017--Beland-L-K--Fe-Ni-Cr--LAMMPS--ipr1&#39;,
+ &#39;2017--Choi-W-M--Co-Fe--LAMMPS--ipr1&#39;,
+ &#39;2017--Wu-C--Ni-Cr-Fe--LAMMPS--ipr1&#39;,
+ &#39;2017--Wu-C--Ni-Fe--LAMMPS--ipr1&#39;,
+ &#39;2018--Choi-W-M--Co-Ni-Cr-Fe-Mn--LAMMPS--ipr1&#39;,
+ &#39;2018--Etesami-S-A--Fe--LAMMPS--ipr1&#39;,
+ &#39;2018--Farkas-D--Fe-Ni-Cr-Co-Cu--LAMMPS--ipr2&#39;,
+ &#39;2018--Jeong-G-U--Pd-Fe--LAMMPS--ipr1&#39;,
+ &#39;2018--Zhou-X-W--Fe-Ni-Cr--LAMMPS--ipr1&#39;,
+ &#39;2018--Zhou-X-W--Fe-Ni-Cr--LAMMPS--ipr2&#39;,
+ &#39;2019--Aslam-I--Fe-Mn-Si-C--LAMMPS--ipr1&#39;,
+ &#39;2019--Byggmastar-J--Fe-O--LAMMPS--ipr1&#39;,
+ &#39;2019--Mendelev-M-I--Fe-Ni-Cr--LAMMPS--ipr1&#39;,
+ &#39;2020--Byggmastar-J--Fe--LAMMPS--ipr1&#39;,
+ &#39;2020--Farkas-D--Fe-Ni-Cr-Co-Al--LAMMPS--ipr1&#39;,
+ &#39;2020--Groger-R--Co-Cr-Fe-Mn-Ni--LAMMPS--ipr1&#39;,
+ &#39;2020--Mori-H--Fe--LAMMPS--ipr1&#39;,
+ &#39;2021--Deluigi-O-R--Fe-Ni-Cr-Co-Cu--LAMMPS--ipr1&#39;,
+ &#39;2021--Starikov-S--Fe--LAMMPS--ipr1&#39;,
+ &#39;2021--Starikov-S--Fe--LAMMPS--ipr2&#39;,
+ &#39;2021--Wen-M--Fe-H--LAMMPS--ipr1&#39;,
+ &#39;2022--Mahata-A--Al-Fe--LAMMPS--ipr1&#39;,
+ &#39;2022--Starikov-S--Fe-Cr-H--LAMMPS--ipr1&#39;,
+ &#39;2022--Sun-Y--Fe--LAMMPS--ipr1&#39;,
+ &#39;EAM_Dynamo_AcklandBaconCalder_1997_Fe__MO_142799717516_005&#39;,
+ &#39;EAM_Dynamo_AcklandMendelevSrolovitz_2004_FeP__MO_884343146310_005&#39;,
+ &#39;EAM_Dynamo_BonnyCastinBullens_2013_FeW__MO_737567242631_000&#39;,
+ &#39;EAM_Dynamo_BonnyCastinTerentyev_2013_FeNiCr__MO_763197941039_000&#39;,
+ &#39;EAM_Dynamo_BonnyPasianotCastin_2009_FeCuNi__MO_469343973171_005&#39;,
+ &#39;EAM_Dynamo_BonnyPasianotMalerba_2009_FeNi__MO_267721408934_005&#39;,
+ &#39;EAM_Dynamo_ChamatiPapanicolaouMishin_2006_Fe__MO_960699513424_000&#39;,
+ &#39;EAM_Dynamo_HepburnAckland_2008_FeC__MO_143977152728_005&#39;,
+ &#39;EAM_Dynamo_Marinica_2007_Fe__MO_466808877130_000&#39;,
+ &#39;EAM_Dynamo_Marinica_2011_Fe__MO_255315407910_000&#39;,
+ &#39;EAM_Dynamo_MendelevBorovikov_2020_FeNiCr__MO_922363340570_000&#39;,
+ &#39;EAM_Dynamo_MendelevHanSon_2007_VFe__MO_249706810527_005&#39;,
+ &#39;EAM_Dynamo_MendelevHanSrolovitz_2003Potential2_Fe__MO_769582363439_005&#39;,
+ &#39;EAM_Dynamo_MendelevHanSrolovitz_2003Potential5_Fe__MO_942420706858_005&#39;,
+ &#39;EAM_Dynamo_MendelevHanSrolovitz_2003_Fe__MO_807997826449_000&#39;,
+ &#39;EAM_Dynamo_MendelevSrolovitzAckland_2005_AlFe__MO_577453891941_005&#39;,
+ &#39;EAM_Dynamo_Mendelev_2003_Fe__MO_546673549085_000&#39;,
+ &#39;EAM_Dynamo_ZhouJohnsonWadley_2004NISTretabulation_Fe__MO_681088298208_000&#39;,
+ &#39;EAM_Dynamo_ZhouJohnsonWadley_2004_Fe__MO_650279905230_005&#39;,
+ &#39;EAM_Magnetic2GQuintic_ChiesaDerletDudarev_2011_Fe__MO_140444321607_002&#39;,
+ &#39;EAM_MagneticCubic_DudarevDerlet_2005_Fe__MO_135034229282_002&#39;,
+ &#39;EAM_MagneticCubic_MendelevHanSrolovitz_2003_Fe__MO_856295952425_002&#39;,
+ &#39;MEAM_LAMMPS_AsadiZaeemNouranian_2015_Fe__MO_492310898779_000&#39;,
+ &#39;MEAM_LAMMPS_ChoiJoSohn_2018_CoNiCrFeMn__MO_115454747503_000&#39;,
+ &#39;MEAM_LAMMPS_ChoiKimSeol_2017_CoFe__MO_179158257180_000&#39;,
+ &#39;MEAM_LAMMPS_EtesamiAsadi_2018_Fe__MO_549900287421_000&#39;,
+ &#39;MEAM_LAMMPS_JelinekGrohHorstemeyer_2012_AlSiMgCuFe__MO_262519520678_000&#39;,
+ &#39;MEAM_LAMMPS_JeongParkDo_2018_PdFe__MO_924736622203_000&#39;,
+ &#39;MEAM_LAMMPS_KimJungLee_2009_FeTiC__MO_110119204723_000&#39;,
+ &#39;MEAM_LAMMPS_KimJungLee_2010_FeNbC__MO_072689718616_000&#39;,
+ &#39;MEAM_LAMMPS_KimLee_2006_PtFe__MO_343168101490_000&#39;,
+ &#39;MEAM_LAMMPS_KimShinLee_2009_FeMn__MO_058735400462_000&#39;,
+ &#39;MEAM_LAMMPS_KoJimLee_2012_FeP__MO_179420363944_000&#39;,
+ &#39;MEAM_LAMMPS_LeeJang_2007_FeH__MO_095610951957_000&#39;,
+ &#39;MEAM_LAMMPS_LeeLeeKim_2006_FeN__MO_432861766738_000&#39;,
+ &#39;MEAM_LAMMPS_LeeLee_2010_FeAl__MO_332211522050_000&#39;,
+ &#39;MEAM_LAMMPS_LeeWirthShim_2005_FeCu__MO_063626065437_000&#39;,
+ &#39;MEAM_LAMMPS_Lee_2006_FeC__MO_856956178669_000&#39;,
+ &#39;MEAM_LAMMPS_LiyanageKimHouze_2014_FeC__MO_075279800195_000&#39;,
+ &#39;MEAM_LAMMPS_SaLee_2008_FeTi__MO_260546967793_000&#39;,
+ &#39;MEAM_LAMMPS_SaLee_2008_NbFe__MO_162036141261_000&#39;,
+ &#39;MEAM_LAMMPS_WuLeeSu_2017_NiCrFe__MO_912636107108_000&#39;,
+ &#39;MEAM_LAMMPS_WuLeeSu_2017_NiFe__MO_321233176498_000&#39;,
+ &#39;MJ_MorrisAgaLevashov_2008_Fe__MO_857282754307_003&#39;,
+ &#39;Morse_Shifted_GirifalcoWeizer_1959HighCutoff_Fe__MO_147603128437_004&#39;,
+ &#39;Morse_Shifted_GirifalcoWeizer_1959LowCutoff_Fe__MO_331285495617_004&#39;,
+ &#39;Morse_Shifted_GirifalcoWeizer_1959MedCutoff_Fe__MO_984358344196_004&#39;,
+ &#39;Tersoff_LAMMPS_MuellerErhartAlbe_2007_Fe__MO_137964310702_003&#39;,
+ &#39;Sim_LAMMPS_EAMCD_StukowskiSadighErhart_2009_FeCr__SM_775564499513_000&#39;,
+ &#39;Sim_LAMMPS_EAM_BonnyCastinBullens_2013_FeCrW__SM_699257350704_000&#39;,
+ &#39;Sim_LAMMPS_EAM_BonnyPasianotTerentyev_2011_FeCr__SM_237089298463_000&#39;,
+ &#39;Sim_LAMMPS_MEAM_AsadiZaeemNouranian_2015_Fe__SM_042630680993_000&#39;,
+ &#39;Sim_LAMMPS_MEAM_EtesamiAsadi_2018_Fe__SM_267016608755_000&#39;,
+ &#39;Sim_LAMMPS_MEAM_JelinekGrohHorstemeyer_2012_AlSiMgCuFe__SM_656517352485_000&#39;,
+ &#39;Sim_LAMMPS_MEAM_KimJungLee_2009_FeTiC__SM_531038274471_000&#39;,
+ &#39;Sim_LAMMPS_MEAM_LiyanageKimHouze_2014_FeC__SM_652425777808_000&#39;,
+ &#39;Sim_LAMMPS_ReaxFF_AryanpourVanDuinKubicki_2010_FeHO__SM_222964216001_001&#39;,
+ &#39;Sim_LAMMPS_TersoffZBL_ByggmastarGranberg_2020_Fe__SM_958863895234_000&#39;,
+ &#39;Sim_LAMMPS_TersoffZBL_HenrikssonBjorkasNordlund_2013_FeC__SM_473463498269_000&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Set the potential</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pot</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">list_potentials</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">job</span><span class="o">.</span><span class="n">potential</span> <span class="o">=</span> <span class="n">pot</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;Selected potential: &#39;</span><span class="p">,</span> <span class="n">pot</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Selected potential:  1997--Ackland-G-J--Fe--LAMMPS--ipr1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we can use the calc_md() method attached to the lammps job.
+Run at 0 pressure, temperature 1000K, for 10000 ionic steps &#64; 1fs/step</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">calc_md</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">pressure</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">n_ionic_steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+            <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">job</span><span class="o">.</span><span class="n">calc_md</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>             <span class="n">pressure</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>             <span class="n">n_ionic_steps</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>             <span class="n">timestep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="ne">TypeError</span>: LammpsInteractive.calc_md() got an unexpected keyword argument &#39;timestep&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Look at output</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="p">[</span><span class="s1">&#39;output&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;groups&#39;: [&#39;generic&#39;, &#39;structure&#39;], &#39;nodes&#39;: []}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="p">[</span><span class="s1">&#39;output/generic/energy_tot&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-526.17114488, -526.57621383, -525.69531783, -525.55762356,
+       -525.66110013, -525.8173434 , -526.20809109, -527.89629215,
+       -529.21539394, -528.10865025, -526.17408517, -525.87745527,
+       -525.49746874, -525.69202846, -526.90133547, -528.12387997,
+       -527.59735876, -525.03204861, -524.37627623, -525.79859142,
+       -526.48603873, -527.30027375, -526.61276712, -524.46082859,
+       -523.96489631, -525.33281983, -527.2149574 , -527.08325463,
+       -526.37621082, -525.25877697, -523.00758781, -521.40493486,
+       -523.73179651, -525.03799276, -526.46000886, -527.18188496,
+       -526.84633607, -524.48014893, -523.5428624 , -525.05035221,
+       -526.07182477, -526.30456978, -526.34046043, -524.89611761,
+       -522.61808904, -523.56054178, -525.15619667, -525.81350063,
+       -526.12772674, -526.51569419, -526.84588588, -526.25152273,
+       -525.35128331, -523.95485411, -524.28554967, -526.42151183,
+       -526.53244221, -526.5111831 , -525.01857209, -524.05358335,
+       -525.95521456, -528.0301092 , -527.5685311 , -525.7337877 ,
+       -524.77994457, -525.43920887, -526.67572706, -529.30186946,
+       -528.97230055, -527.44773209, -526.12834335, -525.21821686,
+       -525.24742094, -527.03681826, -528.82185687, -528.15691831,
+       -526.79696821, -526.14394215, -525.26035615, -524.72250635,
+       -524.646876  , -526.22111668, -527.44418741, -527.52380709,
+       -525.25534891, -524.14750291, -524.81229267, -526.19946928,
+       -526.63932219, -526.43123243, -526.11035709, -526.0398653 ,
+       -525.49938933, -525.85571244, -526.11676558, -526.9265416 ,
+       -527.05782934, -525.94429518, -524.61093528, -523.90375412,
+       -525.93417945])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get the z coordinate of the 5th atom in the structure for every single frame</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">third_coordinate</span> <span class="o">=</span> <span class="n">job</span><span class="p">[</span><span class="s1">&#39;output/generic/positions&#39;</span><span class="p">][:,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">third_coordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1.435      1.49356223 1.50533036 1.46473251 1.53939318 1.33564455
+ 1.40801907 1.44178179 1.46191807 1.4121123  1.55743805 1.34048975
+ 1.40088691 1.52494007 1.24238535 1.47457541 1.39999343 1.5037083
+ 1.40876076 1.4616233  1.38676245 1.64419493 1.48055191 1.4785456
+ 1.39603338 1.35858652 1.42890166 1.46654335 1.29592305 1.68563204
+ 1.39495785 1.42749432 1.3081688  1.49963476 1.43506238 1.49852144
+ 1.24324457 1.67757219 1.44076672 1.20739568 1.54944799 1.36676148
+ 1.47711709 1.56452045 1.37447567 1.39064565 1.57643321 1.43676741
+ 1.40015173 1.50981144 1.38867736 1.57109236 1.2856254  1.54594703
+ 1.31317637 1.61450317 1.33993643 1.47975716 1.29701602 1.60625725
+ 1.51985598 1.28531597 1.46949362 1.62701772 1.39252676 1.41475702
+ 1.41793559 1.49555017 1.36919977 1.29440109 1.45452688 1.4524996
+ 1.46974906 1.40388159 1.48605925 1.45328717 1.51845165 1.3794458
+ 1.31442195 1.602098   1.32275338 1.27952894 1.44805984 1.39320421
+ 1.61547194 1.53745005 1.47044878 1.57396901 1.40890561 1.33268622
+ 1.41634987 1.43277885 1.28469122 1.48719237 1.46438068 1.52654848
+ 1.52363702 1.3880327  1.44864484 1.47929786 1.44742157]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">third_coordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb9a90ea980&gt;]
+</pre></div>
+</div>
+<img alt="_images/d9490fe4603f0c246ec3b3678166e649bf805b41e95f6fab8b9f90f7bcd5e7c7.png" src="_images/d9490fe4603f0c246ec3b3678166e649bf805b41e95f6fab8b9f90f7bcd5e7c7.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">job</span><span class="p">[</span><span class="s1">&#39;output/generic/energy_tot&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fb9a9ca7e20&gt;]
+</pre></div>
+</div>
+<img alt="_images/0c9c9a7023f4ef18244a44edbe0990ec46bf2db6509d06c7491d6f860963cb23.png" src="_images/0c9c9a7023f4ef18244a44edbe0990ec46bf2db6509d06c7491d6f860963cb23.png" />
+</div>
+</div>
+<p>If NGLView is installed, we can also plot an animated trajectory of the atoms:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span><span class="o">.</span><span class="n">animate_structures</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2cce407da8494c668d70edf54406c0b2", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pyiron workflow template</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By pyiron
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
