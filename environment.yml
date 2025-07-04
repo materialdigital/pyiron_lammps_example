@@ -8,3 +8,4 @@ dependencies:
 - pymatgen 
 - jupyterlab
 - lammps
+- iprpy-data
